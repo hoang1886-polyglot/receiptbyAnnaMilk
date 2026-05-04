@@ -11,6 +11,7 @@ export default function IngredientList({ ingredients }: Props) {
   const [scaledIngredients, setScaledIngredients] = useState(ingredients)
   const [selectedIngredient, setSelectedIngredient] = useState<string | null>(null)
   const [inputGrams, setInputGrams] = useState<number>(0)
+  const [checked, setChecked] = useState<Set<number>>(new Set())
 
   const handleAutoScale = (name: string, grams: number) => {
     if (!grams) return
@@ -32,25 +33,23 @@ export default function IngredientList({ ingredients }: Props) {
     )
   }
   const handleScale = () => {
-  const recipe = {
-    ingredients: ingredients.map(i => ({
-      name: i.name,
-      grams: i.grams
-    }))
+    const recipe = {
+      ingredients: ingredients.map(i => ({
+        name: i.name,
+        grams: i.grams
+      }))
+    }
+
+    const updated = scaleRecipeByIngredient(recipe, "Мука", 100)
+
+    setScaledIngredients(
+      updated.map((u, index) => ({
+        ...ingredients[index],
+        grams: u.grams
+      }))
+    )
   }
 
-  const updated = scaleRecipeByIngredient(recipe, "Мука", 100)
-
-  setScaledIngredients(
-    updated.map((u, index) => ({
-      ...ingredients[index],
-      grams: u.grams
-    }))
-  )
-}
-  const updated = scaleRecipeByIngredient(recipe, "Мука", 100);
-  console.log(updated);
-};
   const toggle = (id: number) => {
     setChecked(prev => {
       const next = new Set(prev)
