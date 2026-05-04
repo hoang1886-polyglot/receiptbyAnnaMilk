@@ -1,0 +1,70 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Recipe {
+  id          Int          @id @default(autoincrement())
+  title       String
+  category    String
+  imageUrl    String?
+  description String?
+  calories    Float
+  protein     Float
+  fat         Float
+  carbs       Float
+  cookTime    Int          // minutes
+  servings    Int          @default(4)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  ingredients  Ingredient[]
+  steps        Step[]
+  mealPlanItems MealPlanItem[]
+}
+
+model Ingredient {
+  id       Int    @id @default(autoincrement())
+  name     String
+  grams    Float
+  unit     String @default("г")
+  calories Float  @default(0)
+  protein  Float  @default(0)
+  fat      Float  @default(0)
+  carbs    Float  @default(0)
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model Step {
+  id          Int    @id @default(autoincrement())
+  order       Int
+  description String
+  duration    Int?   // minutes, optional
+  recipeId    Int
+  recipe      Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+}
+
+model MealPlan {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  name      String?
+  createdAt DateTime @default(now())
+  items     MealPlanItem[]
+}
+
+model MealPlanItem {
+  id         Int      @id @default(autoincrement())
+  mealType   String   // breakfast, lunch, dinner, snack
+  servings   Float    @default(1)
+  mealPlanId Int
+  recipeId   Int
+  mealPlan   MealPlan @relation(fields: [mealPlanId], references: [id], onDelete: Cascade)
+  recipe     Recipe   @relation(fields: [recipeId], references: [id])
+}

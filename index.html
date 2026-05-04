@@ -1,0 +1,546 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .app { background: #fdf9f0; min-height: 600px; font-family: Georgia, serif; border-radius: var(--border-radius-lg); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+  .nav { background: #3d2510; padding: 0 20px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { color: #faf0d7; font-size: 16px; font-weight: 600; font-family: Georgia, serif; letter-spacing: 0.5px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { color: #e8d5b7; font-size: 11px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-family: var(--font-sans); transition: background 0.15s; }
+  .nav-link:hover, .nav-link.active { background: #c8552a; color: white; }
+  .page { display: none; }
+  .page.active { display: block; }
+  .hero { background: linear-gradient(135deg, #3d2510 0%, #5c3d1e 50%, #c8552a 100%); padding: 40px 24px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.08) 1px, transparent 0); background-size: 24px 24px; }
+  .hero-eyebrow { color: #e8d5b7; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; font-family: var(--font-sans); position: relative; }
+  .hero-title { color: white; font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; position: relative; }
+  .hero-title span { color: #f5e0ad; }
+  .hero-sub { color: #e8d5b7; font-size: 12px; line-height: 1.6; margin-bottom: 20px; font-family: var(--font-sans); position: relative; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .hero-btns { display: flex; gap: 10px; justify-content: center; position: relative; }
+  .btn-primary { background: #f5e0ad; color: #3d2510; font-size: 12px; font-weight: 600; padding: 9px 20px; border-radius: 50px; border: none; cursor: pointer; font-family: var(--font-sans); }
+  .btn-outline { border: 1.5px solid rgba(245,224,173,0.5); color: #faf0d7; font-size: 12px; font-weight: 500; padding: 9px 20px; border-radius: 50px; background: transparent; cursor: pointer; font-family: var(--font-sans); }
+  .section { padding: 24px; }
+  .section-title { font-size: 22px; font-weight: 700; color: #3d2510; margin-bottom: 4px; font-family: Georgia, serif; }
+  .section-sub { font-size: 11px; color: #5c3d1e; opacity: 0.6; margin-bottom: 16px; font-family: var(--font-sans); }
+  .cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .cat-card { background: white; border-radius: 12px; padding: 12px 8px; text-align: center; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.2s; }
+  .cat-card:hover { border-color: #c8552a; transform: translateY(-2px); }
+  .cat-emoji { font-size: 22px; margin-bottom: 6px; }
+  .cat-name { font-size: 10px; font-weight: 600; color: #3d2510; font-family: var(--font-sans); }
+  .cat-desc { font-size: 9px; color: #5c3d1e; opacity: 0.5; margin-top: 2px; font-family: var(--font-sans); line-height: 1.3; }
+  .recipes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .recipe-card { background: white; border-radius: 14px; overflow: hidden; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.2s; }
+  .recipe-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,61,30,0.12); }
+  .recipe-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
+  .recipe-img-badge { position: absolute; top: 6px; left: 6px; background: rgba(61,37,16,0.75); color: #faf0d7; font-size: 9px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-sans); }
+  .recipe-body { padding: 10px; }
+  .recipe-title { font-size: 13px; font-weight: 700; color: #3d2510; margin-bottom: 4px; font-family: Georgia, serif; line-height: 1.3; }
+  .recipe-desc { font-size: 10px; color: #5c3d1e; opacity: 0.6; margin-bottom: 8px; font-family: var(--font-sans); line-height: 1.4; }
+  .recipe-meta { display: flex; gap: 8px; font-size: 9px; color: #5c3d1e; opacity: 0.5; margin-bottom: 8px; font-family: var(--font-sans); }
+  .kbzhu { display: grid; grid-template-columns: repeat(4,1fr); background: #fdf9f0; border-radius: 8px; padding: 6px; text-align: center; }
+  .kbzhu-val { font-size: 11px; font-weight: 700; }
+  .kbzhu-label { font-size: 8px; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); }
+  .kbzhu-kcal { color: #c8552a; }
+  .kbzhu-prot { color: #6b8f4e; }
+  .kbzhu-fat { color: #e09a28; }
+  .kbzhu-carb { color: #5c3d1e; }
+
+  /* Recipe detail */
+  .recipe-detail { padding: 20px 24px; }
+  .back-link { font-size: 11px; color: #5c3d1e; opacity: 0.6; cursor: pointer; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-sans); }
+  .back-link:hover { opacity: 1; }
+  .recipe-hero-img { height: 180px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 72px; background: #faf0d7; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .recipe-hero-title { font-size: 26px; font-weight: 700; color: #3d2510; margin-bottom: 6px; font-family: Georgia, serif; }
+  .recipe-hero-desc { font-size: 12px; color: #5c3d1e; opacity: 0.7; margin-bottom: 12px; font-family: var(--font-sans); line-height: 1.6; }
+  .kbzhu-big { background: #3d2510; border-radius: 14px; padding: 16px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 20px; }
+  .kbzhu-big-val { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .kbzhu-big-label { font-size: 10px; opacity: 0.5; color: #faf0d7; margin-top: 2px; font-family: var(--font-sans); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .col-title { font-size: 16px; font-weight: 700; color: #3d2510; margin-bottom: 12px; font-family: Georgia, serif; }
+  .ing-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: white; border-radius: 10px; margin-bottom: 6px; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.15s; }
+  .ing-item.checked { opacity: 0.45; background: #eaf3de; border-color: #c0dd97; }
+  .ing-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #e8d5b7; margin-right: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .ing-check.on { background: #6b8f4e; border-color: #6b8f4e; }
+  .ing-check.on::after { content: '✓'; color: white; font-size: 10px; }
+  .ing-name { font-size: 11px; font-weight: 500; color: #3d2510; flex: 1; font-family: var(--font-sans); }
+  .ing-name.struck { text-decoration: line-through; }
+  .ing-grams { font-size: 10px; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); }
+  .step-item { display: flex; gap: 10px; margin-bottom: 12px; }
+  .step-num { width: 26px; height: 26px; background: #c8552a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; font-family: var(--font-sans); }
+  .step-text { font-size: 11px; color: #3d2510; line-height: 1.6; font-family: var(--font-sans); padding-top: 4px; }
+  .add-plan-btn { background: #3d2510; color: #faf0d7; font-size: 11px; font-weight: 500; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: var(--font-sans); }
+  .progress-bar { height: 4px; background: #f5e0ad; border-radius: 2px; margin-bottom: 12px; }
+  .progress-fill { height: 100%; background: #6b8f4e; border-radius: 2px; transition: width 0.4s; }
+
+  /* Meal plan */
+  .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .week-btn { width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #f5e0ad; background: white; color: #3d2510; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .week-label { font-size: 13px; font-weight: 500; color: #3d2510; font-family: var(--font-sans); }
+  .week-summary { background: #3d2510; border-radius: 14px; padding: 14px 20px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 16px; }
+  .ws-val { font-size: 18px; font-weight: 700; font-family: Georgia, serif; }
+  .ws-label { font-size: 9px; opacity: 0.5; color: #faf0d7; font-family: var(--font-sans); margin-top: 1px; }
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .day-col { background: white; border-radius: 10px; padding: 8px 6px; border: 0.5px solid #f5e0ad; min-height: 120px; }
+  .day-col.today { border-color: #c8552a; background: #fff8f5; }
+  .day-name { font-size: 9px; font-weight: 600; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); margin-bottom: 1px; }
+  .day-num { font-size: 16px; font-weight: 700; color: #3d2510; font-family: Georgia, serif; }
+  .day-num.today-num { color: #c8552a; }
+  .day-kcal { font-size: 8px; color: #5c3d1e; opacity: 0.45; background: #f5e0ad; border-radius: 10px; padding: 1px 5px; margin-top: 4px; font-family: var(--font-sans); display: inline-block; }
+  .day-meal-label { font-size: 8px; color: #5c3d1e; opacity: 0.4; margin-top: 6px; margin-bottom: 2px; font-family: var(--font-sans); }
+  .day-meal-item { background: #fdf9f0; border-radius: 5px; padding: 3px 5px; font-size: 8.5px; color: #3d2510; font-family: var(--font-sans); margin-bottom: 2px; line-height: 1.3; cursor: pointer; }
+  .day-meal-item:hover { background: #f5e0ad; }
+  .new-form { padding: 20px 24px; }
+  .form-section { background: white; border-radius: 14px; border: 0.5px solid #f5e0ad; padding: 16px; margin-bottom: 14px; }
+  .form-section-title { font-size: 16px; font-weight: 700; color: #3d2510; margin-bottom: 14px; font-family: Georgia, serif; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .form-label { font-size: 10px; font-weight: 500; color: #5c3d1e; margin-bottom: 4px; font-family: var(--font-sans); display: block; }
+  .form-input { width: 100%; border: 0.5px solid #f5e0ad; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #3d2510; background: #fdf9f0; font-family: var(--font-sans); }
+  .kbzhu-auto { background: #3d2510; border-radius: 10px; padding: 12px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-top: 12px; }
+  .kbzhu-auto-val { font-size: 14px; font-weight: 700; font-family: Georgia, serif; }
+  .kbzhu-auto-label { font-size: 9px; opacity: 0.45; color: #faf0d7; font-family: var(--font-sans); }
+  .ing-row { display: grid; grid-template-columns: 3fr 1fr 1fr; gap: 6px; margin-bottom: 6px; align-items: center; }
+  .submit-btn { background: #c8552a; color: white; width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-sans); }
+</style>
+
+<div class="app">
+  <nav class="nav">
+    <div class="nav-logo">КулинАрт</div>
+    <div class="nav-links">
+      <div class="nav-link active" onclick="showPage('home')">Главная</div>
+      <div class="nav-link" onclick="showPage('recipes')">Рецепты</div>
+      <div class="nav-link" onclick="showPage('new')">+ Добавить</div>
+      <div class="nav-link" onclick="showPage('plan')">План питания</div>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div id="page-home" class="page active">
+    <div class="hero">
+      <div class="hero-eyebrow">Добро пожаловать</div>
+      <div class="hero-title">Готовьте<br><span>с любовью</span></div>
+      <div class="hero-sub" style="margin-bottom:16px;margin-top:8px;">Откройте мир вкусов — от классических европейских блюд до секретов азиатской кухни</div>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('recipes')">Смотреть рецепты</button>
+        <button class="btn-outline" onclick="showPage('plan')">План питания</button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">Категории</div>
+      <div class="section-sub">Выберите, что хотите приготовить сегодня</div>
+      <div class="cats">
+        <div class="cat-card" onclick="filterRecipes('desserts')">
+          <div class="cat-emoji">🍰</div>
+          <div class="cat-name">Десерты</div>
+          <div class="cat-desc">Сладкие угощения</div>
+        </div>
+        <div class="cat-card" onclick="filterRecipes('asian')">
+          <div class="cat-emoji">🍜</div>
+          <div class="cat-name">Азиатские</div>
+          <div class="cat-desc">Блюда Азии</div>
+        </div>
+        <div class="cat-card" onclick="filterRecipes('european')">
+          <div class="cat-emoji">🥐</div>
+          <div class="cat-name">Европейские</div>
+          <div class="cat-desc">Классика кухни</div>
+        </div>
+        <div class="cat-card" onclick="filterRecipes('drinks')">
+          <div class="cat-emoji">☕</div>
+          <div class="cat-name">Напитки</div>
+          <div class="cat-desc">Горячие и холодные</div>
+        </div>
+        <div class="cat-card" onclick="filterRecipes('diet')">
+          <div class="cat-emoji">🥗</div>
+          <div class="cat-name">Диетические</div>
+          <div class="cat-desc">Для похудения</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" style="padding-top:0">
+      <div class="section-title">Недавние рецепты</div>
+      <div class="section-sub">Свежие добавления в коллекцию</div>
+      <div class="recipes-grid" id="home-recipes"></div>
+    </div>
+  </div>
+
+  <!-- RECIPES LIST -->
+  <div id="page-recipes" class="page">
+    <div class="section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <div class="section-title">Рецепты</div>
+          <div class="section-sub" id="recipes-count">6 блюд найдено</div>
+        </div>
+        <button onclick="showPage('new')" style="background:#c8552a;color:white;border:none;padding:8px 14px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">+ Добавить</button>
+      </div>
+      <div style="background:white;border-radius:14px;padding:12px;border:0.5px solid #f5e0ad;margin-bottom:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <input class="form-input" placeholder="Поиск по названию..." id="search-title" oninput="filterRecipesList()" style="background:#fdf9f0;">
+          <input class="form-input" placeholder="Найти по ингредиенту..." id="search-ing" oninput="filterRecipesList()" style="background:#fdf9f0;">
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="cat-filters">
+        <button class="cat-filter-btn active" onclick="setCatFilter('all',this)" data-cat="all">🍽️ Все</button>
+        <button class="cat-filter-btn" onclick="setCatFilter('desserts',this)" data-cat="desserts">🍰 Десерты</button>
+        <button class="cat-filter-btn" onclick="setCatFilter('asian',this)" data-cat="asian">🍜 Азиатские</button>
+        <button class="cat-filter-btn" onclick="setCatFilter('european',this)" data-cat="european">🥐 Европейские</button>
+        <button class="cat-filter-btn" onclick="setCatFilter('drinks',this)" data-cat="drinks">☕ Напитки</button>
+        <button class="cat-filter-btn" onclick="setCatFilter('diet',this)" data-cat="diet">🥗 Диета</button>
+      </div>
+      <div class="recipes-grid" id="recipes-list"></div>
+    </div>
+  </div>
+
+  <!-- RECIPE DETAIL -->
+  <div id="page-detail" class="page">
+    <div class="recipe-detail">
+      <div class="back-link" onclick="showPage('recipes')">← Назад к рецептам</div>
+      <div class="recipe-hero-img" id="detail-img">🍽️</div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:14px;">
+        <div>
+          <div class="recipe-hero-title" id="detail-title">Рецепт</div>
+          <div class="recipe-hero-desc" id="detail-desc"></div>
+          <div class="recipe-meta" id="detail-meta"></div>
+        </div>
+        <button class="add-plan-btn" onclick="showAddPlanModal()">📅 В план</button>
+      </div>
+      <div class="kbzhu-big" id="detail-kbzhu"></div>
+      <div class="two-col">
+        <div>
+          <div class="col-title">Ингредиенты</div>
+          <div style="margin-bottom:8px;">
+            <div style="display:flex;justify-content:space-between;font-size:9px;color:#5c3d1e;opacity:0.5;margin-bottom:4px;font-family:var(--font-sans);">
+              <span>Есть в наличии</span><span id="ing-progress">0/0</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+          </div>
+          <div id="detail-ingredients"></div>
+        </div>
+        <div>
+          <div class="col-title">Приготовление</div>
+          <div id="detail-steps"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW RECIPE -->
+  <div id="page-new" class="page">
+    <div class="new-form">
+      <div class="section-title" style="margin-bottom:4px;">Новый рецепт</div>
+      <div class="section-sub">Поделитесь своим любимым блюдом</div>
+      <div class="form-section">
+        <div class="form-section-title">Основная информация</div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Название *</label>
+            <input class="form-input" id="new-title" placeholder="Например: Тирамису">
+          </div>
+          <div>
+            <label class="form-label">Категория</label>
+            <select class="form-input" id="new-cat">
+              <option value="desserts">🍰 Десерты</option>
+              <option value="asian">🍜 Азиатские</option>
+              <option value="european">🥐 Европейские</option>
+              <option value="drinks">☕ Напитки</option>
+              <option value="diet">🥗 Диетические</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label class="form-label">Время (мин)</label>
+            <input class="form-input" type="number" id="new-time" value="30" min="1">
+          </div>
+          <div>
+            <label class="form-label">Порции</label>
+            <input class="form-input" type="number" id="new-servings" value="4" min="1">
+          </div>
+        </div>
+        <div>
+          <label class="form-label">Описание</label>
+          <textarea class="form-input" id="new-desc" rows="2" style="resize:none;"></textarea>
+        </div>
+      </div>
+      <div class="form-section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div class="form-section-title" style="margin-bottom:0">Ингредиенты</div>
+          <span onclick="addIngRow()" style="font-size:11px;color:#c8552a;cursor:pointer;font-family:var(--font-sans);font-weight:500;">+ Добавить</span>
+        </div>
+        <div style="display:grid;grid-template-columns:3fr 1fr 1fr;gap:6px;margin-bottom:6px;">
+          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Название</span>
+          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Кол-во</span>
+          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Ед.</span>
+        </div>
+        <div id="ing-rows">
+          <div class="ing-row">
+            <input class="form-input" placeholder="Мука пшеничная">
+            <input class="form-input" type="number" value="200" min="0">
+            <input class="form-input" value="г">
+          </div>
+          <div class="ing-row">
+            <input class="form-input" placeholder="Сахар">
+            <input class="form-input" type="number" value="100" min="0">
+            <input class="form-input" value="г">
+          </div>
+        </div>
+        <div class="kbzhu-auto">
+          <div><div class="kbzhu-auto-val" style="color:#f5e0ad;">320</div><div class="kbzhu-auto-label">ккал/порц</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#97c459;">12г</div><div class="kbzhu-auto-label">белки</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#e8d5b7;">8г</div><div class="kbzhu-auto-label">жиры</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#ef9f27;">48г</div><div class="kbzhu-auto-label">углеводы</div></div>
+        </div>
+        <div style="font-size:9px;color:#5c3d1e;opacity:0.35;text-align:center;margin-top:6px;font-family:var(--font-sans);">КБЖУ рассчитывается автоматически на 4 порции</div>
+      </div>
+      <button class="submit-btn" onclick="saveRecipe()">✓ Сохранить рецепт</button>
+    </div>
+  </div>
+
+  <!-- MEAL PLAN -->
+  <div id="page-plan" class="page">
+    <div class="section">
+      <div class="week-nav">
+        <div>
+          <div class="section-title">План питания</div>
+          <div class="section-sub">Текущая неделя</div>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="week-btn">←</button>
+          <span class="week-label">Сегодня</span>
+          <button class="week-btn">→</button>
+        </div>
+      </div>
+      <div class="week-summary">
+        <div><div class="ws-val" style="color:#f5e0ad;">2840</div><div class="ws-label">ккал/нед</div></div>
+        <div><div class="ws-val" style="color:#97c459;">186г</div><div class="ws-label">белки</div></div>
+        <div><div class="ws-val" style="color:#e8d5b7;">94г</div><div class="ws-label">жиры</div></div>
+        <div><div class="ws-val" style="color:#ef9f27;">312г</div><div class="ws-label">углеводы</div></div>
+      </div>
+      <div class="week-grid" id="week-grid"></div>
+      <div style="text-align:center;margin-top:16px;">
+        <button onclick="showPage('recipes')" style="background:#c8552a;color:white;border:none;padding:10px 20px;border-radius:12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">Выбрать рецепты →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cat-filter-btn { padding: 7px 14px; border-radius: 50px; font-size: 11px; font-weight: 500; border: 0.5px solid #f5e0ad; background: white; color: #5c3d1e; cursor: pointer; font-family: var(--font-sans); transition: all 0.15s; }
+  .cat-filter-btn.active { background: #3d2510; color: #faf0d7; border-color: #3d2510; }
+</style>
+
+<script>
+const RECIPES = [
+  { id:1, title:'Классический тирамису', cat:'desserts', emoji:'🍰', bg:'#faf0d7', desc:'Нежный итальянский десерт с маскарпоне', kcal:420, prot:8, fat:28, carbs:35, time:30, servings:6,
+    ingredients:[{name:'Маскарпоне',g:500},{name:'Яйца',g:180},{name:'Сахар',g:100},{name:'Савоярди',g:200},{name:'Эспрессо',g:200},{name:'Какао',g:20}],
+    steps:['Взбейте желтки с сахаром до побеления','Добавьте маскарпоне и перемешайте','Взбейте белки в крепкую пену и введите в крем','Обмакните савоярди в остывший эспрессо','Выложите слоями: печенье, крем, снова печенье и крем','Посыпьте какао, уберите в холодильник на 4–6 часов']
+  },
+  { id:2, title:'Японский рамен', cat:'asian', emoji:'🍜', bg:'#fff0e0', desc:'Насыщенный бульон с лапшой и яйцом', kcal:520, prot:32, fat:18, carbs:55, time:90, servings:2,
+    ingredients:[{name:'Лапша рамен',g:200},{name:'Куриный бульон',g:800},{name:'Свинина',g:200},{name:'Яйца',g:120},{name:'Соевый соус',g:40},{name:'Нори',g:10}],
+    steps:['Сварите яйца 7 мин, замаринуйте в соевом соусе','Обжарьте грудинку, нарежьте ломтиками','Доведите бульон с соевым соусом до кипения','Отварите лапшу 3–4 минуты','Разложите лапшу по тарелкам, залейте бульоном','Добавьте мясо, яйцо, нори и зелёный лук']
+  },
+  { id:3, title:'Французский луковый суп', cat:'european', emoji:'🧅', bg:'#fff8e8', desc:'Классика с карамелизованным луком и сыром', kcal:310, prot:14, fat:16, carbs:28, time:60, servings:4,
+    ingredients:[{name:'Лук репчатый',g:800},{name:'Сливочное масло',g:50},{name:'Говяжий бульон',g:1000},{name:'Сыр грюйер',g:150},{name:'Багет',g:100},{name:'Белое вино',g:100}],
+    steps:['Нарежьте лук тонкими полукольцами','Карамелизуйте лук на масле 40–45 мин','Добавьте вино, дайте испариться, влейте бульон','Варите 15 минут на среднем огне','Разлейте по жаропрочным мискам с хлебом','Посыпьте сыром и поставьте под гриль 3–4 мин']
+  },
+  { id:4, title:'Матча латте', cat:'drinks', emoji:'🍵', bg:'#e8f5e0', desc:'Нежный горячий напиток из чая матча', kcal:120, prot:4, fat:4, carbs:16, time:5, servings:1,
+    ingredients:[{name:'Порошок матча',g:5},{name:'Вода 80°C',g:60},{name:'Молоко',g:200},{name:'Мёд',g:15}],
+    steps:['Просейте матча через мелкое сито','Добавьте воду и взбейте венчиком до пены','Подогрейте молоко и взбейте капучинатором','Влейте молоко, не перемешивая для красивых слоёв']
+  },
+  { id:5, title:'Куриный салат с авокадо', cat:'diet', emoji:'🥗', bg:'#e8f5e0', desc:'Лёгкий белковый салат без майонеза', kcal:280, prot:35, fat:12, carbs:8, time:20, servings:2,
+    ingredients:[{name:'Куриная грудка',g:300},{name:'Авокадо',g:150},{name:'Руккола',g:80},{name:'Черри томаты',g:100},{name:'Лимонный сок',g:30},{name:'Оливковое масло',g:15}],
+    steps:['Отварите курицу 20 мин, разберите на волокна','Нарежьте авокадо кубиками, сбрызните лимоном','Разрежьте томаты пополам, промойте рукколу','Смешайте всё, заправьте маслом и лимоном','Посолите и поперчите по вкусу']
+  },
+  { id:6, title:'Домашние круассаны', cat:'european', emoji:'🥐', bg:'#fff8e8', desc:'Слоёные французские круассаны', kcal:380, prot:7, fat:20, carbs:43, time:180, servings:8,
+    ingredients:[{name:'Мука',g:500},{name:'Сливочное масло',g:250},{name:'Молоко',g:300},{name:'Дрожжи',g:7},{name:'Сахар',g:50},{name:'Соль',g:10}],
+    steps:['Смешайте муку, сахар, соль, дрожжи и молоко','Оставьте тесто подниматься 1 час','Раскатайте холодное масло в прямоугольник','Сделайте 3 складки, охлаждая 30 мин между каждой','Нарежьте треугольники и скрутите круассаны','Выпекайте при 200°C 18–20 мин']
+  }
+];
+
+const WEEK_DAYS = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+const MEAL_PLAN_DATA = {
+  0: [{mealType:'🌅 Завтрак', recipe:'Матча латте'}, {mealType:'🌙 Ужин', recipe:'Куриный салат'}],
+  2: [{mealType:'☀️ Обед', recipe:'Японский рамен'}],
+  4: [{mealType:'☀️ Обед', recipe:'Луковый суп'}, {mealType:'🍎 Перекус', recipe:'Тирамису'}],
+};
+
+let currentCat = 'all';
+let checkedIngs = new Set();
+let currentRecipeId = null;
+
+function renderRecipeCard(r, onclick) {
+  return `<div class="recipe-card" onclick="${onclick}">
+    <div class="recipe-img" style="background:${r.bg}">
+      <span style="font-size:44px">${r.emoji}</span>
+      <div class="recipe-img-badge">${catLabel(r.cat)}</div>
+    </div>
+    <div class="recipe-body">
+      <div class="recipe-title">${r.title}</div>
+      <div class="recipe-desc">${r.desc}</div>
+      <div class="recipe-meta"><span>⏱ ${r.time} мин</span><span>👤 ${r.servings} порц.</span><span>${r.ingredients.length} ингр.</span></div>
+      <div class="kbzhu">
+        <div><div class="kbzhu-val kbzhu-kcal">${r.kcal}</div><div class="kbzhu-label">Ккал</div></div>
+        <div><div class="kbzhu-val kbzhu-prot">${r.prot}г</div><div class="kbzhu-label">Б</div></div>
+        <div><div class="kbzhu-val kbzhu-fat">${r.fat}г</div><div class="kbzhu-label">Ж</div></div>
+        <div><div class="kbzhu-val kbzhu-carb">${r.carbs}г</div><div class="kbzhu-label">У</div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function catLabel(cat) {
+  const map = {desserts:'🍰 Десерты',asian:'🍜 Азиатские',european:'🥐 Европейские',drinks:'☕ Напитки',diet:'🥗 Диета'};
+  return map[cat] || cat;
+}
+
+function renderHomeRecipes() {
+  const el = document.getElementById('home-recipes');
+  el.innerHTML = RECIPES.slice(0,3).map(r => renderRecipeCard(r, `showDetail(${r.id})`)).join('');
+}
+
+function renderRecipesList() {
+  const titleQ = document.getElementById('search-title')?.value.toLowerCase() || '';
+  const ingQ = document.getElementById('search-ing')?.value.toLowerCase() || '';
+  let filtered = RECIPES.filter(r => {
+    if (currentCat !== 'all' && r.cat !== currentCat) return false;
+    if (titleQ && !r.title.toLowerCase().includes(titleQ)) return false;
+    if (ingQ && !r.ingredients.some(i => i.name.toLowerCase().includes(ingQ))) return false;
+    return true;
+  });
+  const el = document.getElementById('recipes-list');
+  const count = document.getElementById('recipes-count');
+  if (count) count.textContent = `${filtered.length} блюд найдено`;
+  if (el) el.innerHTML = filtered.map(r => renderRecipeCard(r, `showDetail(${r.id})`)).join('');
+}
+
+function filterRecipesList() { renderRecipesList(); }
+function setCatFilter(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipesList();
+}
+
+function filterRecipes(cat) {
+  currentCat = cat;
+  showPage('recipes');
+  setTimeout(() => {
+    document.querySelectorAll('.cat-filter-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === cat);
+    });
+    renderRecipesList();
+  }, 50);
+}
+
+function showDetail(id) {
+  const r = RECIPES.find(x => x.id === id);
+  if (!r) return;
+  currentRecipeId = id;
+  checkedIngs = new Set();
+  document.getElementById('detail-img').textContent = r.emoji;
+  document.getElementById('detail-img').style.background = r.bg;
+  document.getElementById('detail-title').textContent = r.title;
+  document.getElementById('detail-desc').textContent = r.desc;
+  document.getElementById('detail-meta').innerHTML = `<span>⏱ ${r.time} мин</span><span style="margin-left:12px">👤 ${r.servings} порц.</span><span style="margin-left:12px">${r.steps.length} шагов</span>`;
+  document.getElementById('detail-kbzhu').innerHTML = `
+    <div><div class="kbzhu-big-val" style="color:#f5e0ad">${r.kcal}</div><div class="kbzhu-big-label">ккал</div></div>
+    <div><div class="kbzhu-big-val" style="color:#97c459">${r.prot}г</div><div class="kbzhu-big-label">белки</div></div>
+    <div><div class="kbzhu-big-val" style="color:#e8d5b7">${r.fat}г</div><div class="kbzhu-big-label">жиры</div></div>
+    <div><div class="kbzhu-big-val" style="color:#ef9f27">${r.carbs}г</div><div class="kbzhu-big-label">углеводы</div></div>
+  `;
+  renderIngredients(r);
+  document.getElementById('detail-steps').innerHTML = r.steps.map((s,i) =>
+    `<div class="step-item"><div class="step-num">${i+1}</div><div class="step-text">${s}</div></div>`
+  ).join('');
+  showPage('detail');
+}
+
+function renderIngredients(r) {
+  document.getElementById('ing-progress').textContent = `${checkedIngs.size}/${r.ingredients.length}`;
+  document.getElementById('progress-fill').style.width = `${(checkedIngs.size/r.ingredients.length)*100}%`;
+  document.getElementById('detail-ingredients').innerHTML = r.ingredients.map((ing,i) => {
+    const checked = checkedIngs.has(i);
+    return `<div class="ing-item${checked?' checked':''}" onclick="toggleIng(${r.id},${i})">
+      <div style="display:flex;align-items:center">
+        <div class="ing-check${checked?' on':''}"></div>
+        <div class="ing-name${checked?' struck':''}">${ing.name}</div>
+      </div>
+      <div class="ing-grams">${ing.g}г</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleIng(rid, idx) {
+  if (checkedIngs.has(idx)) checkedIngs.delete(idx);
+  else checkedIngs.add(idx);
+  const r = RECIPES.find(x => x.id === rid);
+  if (r) renderIngredients(r);
+}
+
+function renderWeek() {
+  const today = new Date();
+  const grid = document.getElementById('week-grid');
+  if (!grid) return;
+  grid.innerHTML = WEEK_DAYS.map((d, i) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - today.getDay() + 1 + i);
+    const isToday = date.toDateString() === today.toDateString();
+    const meals = MEAL_PLAN_DATA[i] || [];
+    const dayKcal = i === 0 ? 540 : i === 2 ? 520 : i === 4 ? 700 : 0;
+    return `<div class="day-col${isToday?' today':''}">
+      <div class="day-name">${d}</div>
+      <div class="day-num${isToday?' today-num':''}">${date.getDate()}</div>
+      ${dayKcal ? `<div class="day-kcal">${dayKcal} кк</div>` : ''}
+      ${meals.map(m => `<div class="day-meal-label">${m.mealType}</div><div class="day-meal-item">${m.recipe}</div>`).join('')}
+      ${meals.length === 0 ? '<div style="font-size:9px;color:#5c3d1e;opacity:0.25;margin-top:8px;font-family:var(var(--font-sans))">+ добавить</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function addIngRow() {
+  const rows = document.getElementById('ing-rows');
+  const div = document.createElement('div');
+  div.className = 'ing-row';
+  div.innerHTML = `<input class="form-input" placeholder="Ингредиент"><input class="form-input" type="number" value="100" min="0"><input class="form-input" value="г">`;
+  rows.appendChild(div);
+}
+
+function saveRecipe() {
+  const title = document.getElementById('new-title').value;
+  if (!title.trim()) { alert('Введите название!'); return; }
+  const r = {
+    id: RECIPES.length + 1,
+    title,
+    cat: document.getElementById('new-cat').value,
+    emoji: '🍽️',
+    bg: '#fdf9f0',
+    desc: document.getElementById('new-desc').value || 'Мой рецепт',
+    kcal: 320,
+    prot: 15,
+    fat: 10,
+    carbs: 40,
+    time: parseInt(document.getElementById('new-time').value) || 30,
+    servings: parseInt(document.getElementById('new-servings').value) || 4,
+    ingredients: [{name:'Ингредиент 1',g:200},{name:'Ингредиент 2',g:100}],
+    steps: ['Первый шаг приготовления', 'Второй шаг приготовления']
+  };
+  RECIPES.unshift(r);
+  showDetail(r.id);
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const map = {home:0,recipes:1,new:2,plan:3};
+  document.querySelectorAll('.nav-link')[map[name]]?.classList.add('active');
+  if (name === 'home') renderHomeRecipes();
+  if (name === 'recipes') renderRecipesList();
+  if (name === 'plan') renderWeek();
+}
+
+function showAddPlanModal() {
+  alert('В реальном приложении откроется модал для выбора даты и приёма пищи. Рецепт добавится через POST /api/meal-plan');
+}
+
+renderHomeRecipes();
+</script>
