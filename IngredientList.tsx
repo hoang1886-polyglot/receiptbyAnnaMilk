@@ -8,8 +8,24 @@ interface Props {
 }
 
 export default function IngredientList({ ingredients }: Props) {
-  const [checked, setChecked] = useState<Set<number>>(new Set())
+  const [scaledIngredients, setScaledIngredients] = useState(ingredients)
   const handleScale = () => {
+  const recipe = {
+    ingredients: ingredients.map(i => ({
+      name: i.name,
+      grams: i.grams
+    }))
+  }
+
+  const updated = scaleRecipeByIngredient(recipe, "Мука", 100)
+
+  setScaledIngredients(
+    updated.map((u, index) => ({
+      ...ingredients[index],
+      grams: u.grams
+    }))
+  )
+}
   const updated = scaleRecipeByIngredient(recipe, "Мука", 100);
   console.log(updated);
 };
@@ -41,7 +57,7 @@ export default function IngredientList({ ingredients }: Props) {
       </div>
 
       <ul className="space-y-2">
-        {ingredients.map(ing => {
+        {scaledIngredients.map(ing => {
           const isChecked = checked.has(ing.id)
           return (
             <li
@@ -80,6 +96,13 @@ export default function IngredientList({ ingredients }: Props) {
           ✅ Все ингредиенты готовы! Можно готовить!
         </div>
       )}
+
+      <button
+       onClick={handleScale}
+       className="mt-4 w-full bg-sage-500 text-white py-2 rounded-xl"
+      >
+       Подогнать рецепт (тест)
+    </button>
     </div>
   )
 }
