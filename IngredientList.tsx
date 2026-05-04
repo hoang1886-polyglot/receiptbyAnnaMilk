@@ -8,7 +8,28 @@ interface Props {
 }
 
 export default function IngredientList({ ingredients }: Props) {
-  const [scaledIngredients, setScaledIngredients] = useState(ingredients)
+const [scaledIngredients, setScaledIngredients] = useState(ingredients)
+const [selectedIngredient, setSelectedIngredient] = useState<string | null>(null)
+const [inputGrams, setInputGrams] = useState<number>(0)
+  const handleAutoScale = (name: string, grams: number) => {
+    if (!grams) return
+  
+    const recipe = {
+      ingredients: ingredients.map(i => ({
+        name: i.name,
+        grams: i.grams
+      }))
+    }
+  
+    const updated = scaleRecipeByIngredient(recipe, name, grams)
+  
+    setScaledIngredients(
+      updated.map((u, index) => ({
+        ...ingredients[index],
+        grams: u.grams
+      }))
+    )
+  }
   const handleScale = () => {
   const recipe = {
     ingredients: ingredients.map(i => ({
@@ -62,7 +83,10 @@ export default function IngredientList({ ingredients }: Props) {
           return (
             <li
               key={ing.id}
-              onClick={() => toggle(ing.id)}
+              onClick={() => {
+                  toggle(ing.id)
+                  setSelectedIngredient(ing.name)
+              }}
               className={`flex items-center justify-between gap-3 p-3 rounded-xl cursor-pointer transition-all border ${
                 isChecked
                   ? 'bg-sage-50 border-sage-200 opacity-60'
@@ -90,6 +114,25 @@ export default function IngredientList({ ingredients }: Props) {
           )
         })}
       </ul>
+
+      {selectedIngredient && (
+         <div className="mt-4 p-3 border rounded-xl bg-white">
+            <p className="text-sm mb-2">
+      Введите, сколько у вас есть: <b>{selectedIngredient}</b>
+            </p>
+
+            <input
+              type="number"
+              placeholder="граммы"
+              className="w-full border p-2 rounded mb-2"
+              onChange={(e) => {
+                const grams = Number(e.target.value)
+                setInputGrams(grams)
+                handleAutoScale(selectedIngredient, grams)
+              }}
+           />
+        </div>
+      )}
 
       {allChecked && (
         <div className="mt-4 bg-sage-50 border border-sage-200 rounded-xl p-3 text-center text-sm text-sage-600 font-medium">
