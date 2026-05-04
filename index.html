@@ -2,109 +2,109 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font-sans); }
-  .app { background: #fdf9f0; min-height: 600px; font-family: Georgia, serif; border-radius: var(--border-radius-lg); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
-  .nav { background: #3d2510; padding: 0 20px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
-  .nav-logo { color: #faf0d7; font-size: 16px; font-weight: 600; font-family: Georgia, serif; letter-spacing: 0.5px; }
+  .app { background: #f0f4fb; min-height: 600px; font-family: Georgia, serif; border-radius: var(--border-radius-lg); overflow: hidden; border: 0.5px solid var(--color-border-tertiary); }
+  .nav { background: #1a3a5c; padding: 0 20px; height: 48px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { color: #e8f0fe; font-size: 16px; font-weight: 600; font-family: Georgia, serif; letter-spacing: 0.5px; }
   .nav-links { display: flex; gap: 4px; }
-  .nav-link { color: #e8d5b7; font-size: 11px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-family: var(--font-sans); transition: background 0.15s; }
-  .nav-link:hover, .nav-link.active { background: #c8552a; color: white; }
+  .nav-link { color: #c5d9f0; font-size: 11px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-family: var(--font-sans); transition: background 0.15s; }
+  .nav-link:hover, .nav-link.active { background: #1565c0; color: white; }
   .page { display: none; }
   .page.active { display: block; }
-  .hero { background: linear-gradient(135deg, #3d2510 0%, #5c3d1e 50%, #c8552a 100%); padding: 40px 24px; text-align: center; position: relative; overflow: hidden; }
+  .hero { background: linear-gradient(135deg, #1a3a5c 0%, #1e4976 50%, #1565c0 100%); padding: 40px 24px; text-align: center; position: relative; overflow: hidden; }
   .hero::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.08) 1px, transparent 0); background-size: 24px 24px; }
-  .hero-eyebrow { color: #e8d5b7; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; font-family: var(--font-sans); position: relative; }
+  .hero-eyebrow { color: #c5d9f0; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; font-family: var(--font-sans); position: relative; }
   .hero-title { color: white; font-size: 32px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; position: relative; }
-  .hero-title span { color: #f5e0ad; }
-  .hero-sub { color: #e8d5b7; font-size: 12px; line-height: 1.6; margin-bottom: 20px; font-family: var(--font-sans); position: relative; max-width: 400px; margin-left: auto; margin-right: auto; }
+  .hero-title span { color: #b3cef0; }
+  .hero-sub { color: #c5d9f0; font-size: 12px; line-height: 1.6; margin-bottom: 20px; font-family: var(--font-sans); position: relative; max-width: 400px; margin-left: auto; margin-right: auto; }
   .hero-btns { display: flex; gap: 10px; justify-content: center; position: relative; }
-  .btn-primary { background: #f5e0ad; color: #3d2510; font-size: 12px; font-weight: 600; padding: 9px 20px; border-radius: 50px; border: none; cursor: pointer; font-family: var(--font-sans); }
-  .btn-outline { border: 1.5px solid rgba(245,224,173,0.5); color: #faf0d7; font-size: 12px; font-weight: 500; padding: 9px 20px; border-radius: 50px; background: transparent; cursor: pointer; font-family: var(--font-sans); }
+  .btn-primary { background: #b3cef0; color: #1a3a5c; font-size: 12px; font-weight: 600; padding: 9px 20px; border-radius: 50px; border: none; cursor: pointer; font-family: var(--font-sans); }
+  .btn-outline { border: 1.5px solid rgba(245,224,173,0.5); color: #e8f0fe; font-size: 12px; font-weight: 500; padding: 9px 20px; border-radius: 50px; background: transparent; cursor: pointer; font-family: var(--font-sans); }
   .section { padding: 24px; }
-  .section-title { font-size: 22px; font-weight: 700; color: #3d2510; margin-bottom: 4px; font-family: Georgia, serif; }
-  .section-sub { font-size: 11px; color: #5c3d1e; opacity: 0.6; margin-bottom: 16px; font-family: var(--font-sans); }
+  .section-title { font-size: 22px; font-weight: 700; color: #1a3a5c; margin-bottom: 4px; font-family: Georgia, serif; }
+  .section-sub { font-size: 11px; color: #1e4976; opacity: 0.6; margin-bottom: 16px; font-family: var(--font-sans); }
   .cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-  .cat-card { background: white; border-radius: 12px; padding: 12px 8px; text-align: center; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.2s; }
-  .cat-card:hover { border-color: #c8552a; transform: translateY(-2px); }
+  .cat-card { background: white; border-radius: 12px; padding: 12px 8px; text-align: center; border: 0.5px solid #b3cef0; cursor: pointer; transition: all 0.2s; }
+  .cat-card:hover { border-color: #1565c0; transform: translateY(-2px); }
   .cat-emoji { font-size: 22px; margin-bottom: 6px; }
-  .cat-name { font-size: 10px; font-weight: 600; color: #3d2510; font-family: var(--font-sans); }
-  .cat-desc { font-size: 9px; color: #5c3d1e; opacity: 0.5; margin-top: 2px; font-family: var(--font-sans); line-height: 1.3; }
+  .cat-name { font-size: 10px; font-weight: 600; color: #1a3a5c; font-family: var(--font-sans); }
+  .cat-desc { font-size: 9px; color: #1e4976; opacity: 0.5; margin-top: 2px; font-family: var(--font-sans); line-height: 1.3; }
   .recipes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  .recipe-card { background: white; border-radius: 14px; overflow: hidden; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.2s; }
+  .recipe-card { background: white; border-radius: 14px; overflow: hidden; border: 0.5px solid #b3cef0; cursor: pointer; transition: all 0.2s; }
   .recipe-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(92,61,30,0.12); }
   .recipe-img { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 40px; position: relative; }
-  .recipe-img-badge { position: absolute; top: 6px; left: 6px; background: rgba(61,37,16,0.75); color: #faf0d7; font-size: 9px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-sans); }
+  .recipe-img-badge { position: absolute; top: 6px; left: 6px; background: rgba(61,37,16,0.75); color: #e8f0fe; font-size: 9px; padding: 2px 7px; border-radius: 20px; font-family: var(--font-sans); }
   .recipe-body { padding: 10px; }
-  .recipe-title { font-size: 13px; font-weight: 700; color: #3d2510; margin-bottom: 4px; font-family: Georgia, serif; line-height: 1.3; }
-  .recipe-desc { font-size: 10px; color: #5c3d1e; opacity: 0.6; margin-bottom: 8px; font-family: var(--font-sans); line-height: 1.4; }
-  .recipe-meta { display: flex; gap: 8px; font-size: 9px; color: #5c3d1e; opacity: 0.5; margin-bottom: 8px; font-family: var(--font-sans); }
-  .kbzhu { display: grid; grid-template-columns: repeat(4,1fr); background: #fdf9f0; border-radius: 8px; padding: 6px; text-align: center; }
+  .recipe-title { font-size: 13px; font-weight: 700; color: #1a3a5c; margin-bottom: 4px; font-family: Georgia, serif; line-height: 1.3; }
+  .recipe-desc { font-size: 10px; color: #1e4976; opacity: 0.6; margin-bottom: 8px; font-family: var(--font-sans); line-height: 1.4; }
+  .recipe-meta { display: flex; gap: 8px; font-size: 9px; color: #1e4976; opacity: 0.5; margin-bottom: 8px; font-family: var(--font-sans); }
+  .kbzhu { display: grid; grid-template-columns: repeat(4,1fr); background: #f0f4fb; border-radius: 8px; padding: 6px; text-align: center; }
   .kbzhu-val { font-size: 11px; font-weight: 700; }
-  .kbzhu-label { font-size: 8px; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); }
-  .kbzhu-kcal { color: #c8552a; }
-  .kbzhu-prot { color: #6b8f4e; }
+  .kbzhu-label { font-size: 8px; color: #1e4976; opacity: 0.5; font-family: var(--font-sans); }
+  .kbzhu-kcal { color: #1565c0; }
+  .kbzhu-prot { color: #1976d2; }
   .kbzhu-fat { color: #e09a28; }
-  .kbzhu-carb { color: #5c3d1e; }
+  .kbzhu-carb { color: #1e4976; }
 
   /* Recipe detail */
   .recipe-detail { padding: 20px 24px; }
-  .back-link { font-size: 11px; color: #5c3d1e; opacity: 0.6; cursor: pointer; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-sans); }
+  .back-link { font-size: 11px; color: #1e4976; opacity: 0.6; cursor: pointer; margin-bottom: 16px; display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-sans); }
   .back-link:hover { opacity: 1; }
-  .recipe-hero-img { height: 180px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 72px; background: #faf0d7; margin-bottom: 16px; position: relative; overflow: hidden; }
-  .recipe-hero-title { font-size: 26px; font-weight: 700; color: #3d2510; margin-bottom: 6px; font-family: Georgia, serif; }
-  .recipe-hero-desc { font-size: 12px; color: #5c3d1e; opacity: 0.7; margin-bottom: 12px; font-family: var(--font-sans); line-height: 1.6; }
-  .kbzhu-big { background: #3d2510; border-radius: 14px; padding: 16px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 20px; }
+  .recipe-hero-img { height: 180px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 72px; background: #e8f0fe; margin-bottom: 16px; position: relative; overflow: hidden; }
+  .recipe-hero-title { font-size: 26px; font-weight: 700; color: #1a3a5c; margin-bottom: 6px; font-family: Georgia, serif; }
+  .recipe-hero-desc { font-size: 12px; color: #1e4976; opacity: 0.7; margin-bottom: 12px; font-family: var(--font-sans); line-height: 1.6; }
+  .kbzhu-big { background: #1a3a5c; border-radius: 14px; padding: 16px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 20px; }
   .kbzhu-big-val { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
-  .kbzhu-big-label { font-size: 10px; opacity: 0.5; color: #faf0d7; margin-top: 2px; font-family: var(--font-sans); }
+  .kbzhu-big-label { font-size: 10px; opacity: 0.5; color: #e8f0fe; margin-top: 2px; font-family: var(--font-sans); }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .col-title { font-size: 16px; font-weight: 700; color: #3d2510; margin-bottom: 12px; font-family: Georgia, serif; }
-  .ing-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: white; border-radius: 10px; margin-bottom: 6px; border: 0.5px solid #f5e0ad; cursor: pointer; transition: all 0.15s; }
-  .ing-item.checked { opacity: 0.45; background: #eaf3de; border-color: #c0dd97; }
-  .ing-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #e8d5b7; margin-right: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-  .ing-check.on { background: #6b8f4e; border-color: #6b8f4e; }
+  .col-title { font-size: 16px; font-weight: 700; color: #1a3a5c; margin-bottom: 12px; font-family: Georgia, serif; }
+  .ing-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 10px; background: white; border-radius: 10px; margin-bottom: 6px; border: 0.5px solid #b3cef0; cursor: pointer; transition: all 0.15s; }
+  .ing-item.checked { opacity: 0.45; background: #e3f2fd; border-color: #90caf9; }
+  .ing-check { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #c5d9f0; margin-right: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .ing-check.on { background: #1976d2; border-color: #1976d2; }
   .ing-check.on::after { content: '✓'; color: white; font-size: 10px; }
-  .ing-name { font-size: 11px; font-weight: 500; color: #3d2510; flex: 1; font-family: var(--font-sans); }
+  .ing-name { font-size: 11px; font-weight: 500; color: #1a3a5c; flex: 1; font-family: var(--font-sans); }
   .ing-name.struck { text-decoration: line-through; }
-  .ing-grams { font-size: 10px; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); }
+  .ing-grams { font-size: 10px; color: #1e4976; opacity: 0.5; font-family: var(--font-sans); }
   .step-item { display: flex; gap: 10px; margin-bottom: 12px; }
-  .step-num { width: 26px; height: 26px; background: #c8552a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; font-family: var(--font-sans); }
-  .step-text { font-size: 11px; color: #3d2510; line-height: 1.6; font-family: var(--font-sans); padding-top: 4px; }
-  .add-plan-btn { background: #3d2510; color: #faf0d7; font-size: 11px; font-weight: 500; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: var(--font-sans); }
-  .progress-bar { height: 4px; background: #f5e0ad; border-radius: 2px; margin-bottom: 12px; }
-  .progress-fill { height: 100%; background: #6b8f4e; border-radius: 2px; transition: width 0.4s; }
+  .step-num { width: 26px; height: 26px; background: #1565c0; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; font-family: var(--font-sans); }
+  .step-text { font-size: 11px; color: #1a3a5c; line-height: 1.6; font-family: var(--font-sans); padding-top: 4px; }
+  .add-plan-btn { background: #1a3a5c; color: #e8f0fe; font-size: 11px; font-weight: 500; padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-family: var(--font-sans); }
+  .progress-bar { height: 4px; background: #b3cef0; border-radius: 2px; margin-bottom: 12px; }
+  .progress-fill { height: 100%; background: #1976d2; border-radius: 2px; transition: width 0.4s; }
 
   /* Meal plan */
   .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-  .week-btn { width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #f5e0ad; background: white; color: #3d2510; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-  .week-label { font-size: 13px; font-weight: 500; color: #3d2510; font-family: var(--font-sans); }
-  .week-summary { background: #3d2510; border-radius: 14px; padding: 14px 20px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 16px; }
+  .week-btn { width: 32px; height: 32px; border-radius: 8px; border: 0.5px solid #b3cef0; background: white; color: #1a3a5c; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .week-label { font-size: 13px; font-weight: 500; color: #1a3a5c; font-family: var(--font-sans); }
+  .week-summary { background: #1a3a5c; border-radius: 14px; padding: 14px 20px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-bottom: 16px; }
   .ws-val { font-size: 18px; font-weight: 700; font-family: Georgia, serif; }
-  .ws-label { font-size: 9px; opacity: 0.5; color: #faf0d7; font-family: var(--font-sans); margin-top: 1px; }
+  .ws-label { font-size: 9px; opacity: 0.5; color: #e8f0fe; font-family: var(--font-sans); margin-top: 1px; }
   .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-  .day-col { background: white; border-radius: 10px; padding: 8px 6px; border: 0.5px solid #f5e0ad; min-height: 120px; }
-  .day-col.today { border-color: #c8552a; background: #fff8f5; }
-  .day-name { font-size: 9px; font-weight: 600; color: #5c3d1e; opacity: 0.5; font-family: var(--font-sans); margin-bottom: 1px; }
-  .day-num { font-size: 16px; font-weight: 700; color: #3d2510; font-family: Georgia, serif; }
-  .day-num.today-num { color: #c8552a; }
-  .day-kcal { font-size: 8px; color: #5c3d1e; opacity: 0.45; background: #f5e0ad; border-radius: 10px; padding: 1px 5px; margin-top: 4px; font-family: var(--font-sans); display: inline-block; }
-  .day-meal-label { font-size: 8px; color: #5c3d1e; opacity: 0.4; margin-top: 6px; margin-bottom: 2px; font-family: var(--font-sans); }
-  .day-meal-item { background: #fdf9f0; border-radius: 5px; padding: 3px 5px; font-size: 8.5px; color: #3d2510; font-family: var(--font-sans); margin-bottom: 2px; line-height: 1.3; cursor: pointer; }
-  .day-meal-item:hover { background: #f5e0ad; }
+  .day-col { background: white; border-radius: 10px; padding: 8px 6px; border: 0.5px solid #b3cef0; min-height: 120px; }
+  .day-col.today { border-color: #1565c0; background: #fff8f5; }
+  .day-name { font-size: 9px; font-weight: 600; color: #1e4976; opacity: 0.5; font-family: var(--font-sans); margin-bottom: 1px; }
+  .day-num { font-size: 16px; font-weight: 700; color: #1a3a5c; font-family: Georgia, serif; }
+  .day-num.today-num { color: #1565c0; }
+  .day-kcal { font-size: 8px; color: #1e4976; opacity: 0.45; background: #b3cef0; border-radius: 10px; padding: 1px 5px; margin-top: 4px; font-family: var(--font-sans); display: inline-block; }
+  .day-meal-label { font-size: 8px; color: #1e4976; opacity: 0.4; margin-top: 6px; margin-bottom: 2px; font-family: var(--font-sans); }
+  .day-meal-item { background: #f0f4fb; border-radius: 5px; padding: 3px 5px; font-size: 8.5px; color: #1a3a5c; font-family: var(--font-sans); margin-bottom: 2px; line-height: 1.3; cursor: pointer; }
+  .day-meal-item:hover { background: #b3cef0; }
   .new-form { padding: 20px 24px; }
-  .form-section { background: white; border-radius: 14px; border: 0.5px solid #f5e0ad; padding: 16px; margin-bottom: 14px; }
-  .form-section-title { font-size: 16px; font-weight: 700; color: #3d2510; margin-bottom: 14px; font-family: Georgia, serif; }
+  .form-section { background: white; border-radius: 14px; border: 0.5px solid #b3cef0; padding: 16px; margin-bottom: 14px; }
+  .form-section-title { font-size: 16px; font-weight: 700; color: #1a3a5c; margin-bottom: 14px; font-family: Georgia, serif; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-  .form-label { font-size: 10px; font-weight: 500; color: #5c3d1e; margin-bottom: 4px; font-family: var(--font-sans); display: block; }
-  .form-input { width: 100%; border: 0.5px solid #f5e0ad; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #3d2510; background: #fdf9f0; font-family: var(--font-sans); }
-  .kbzhu-auto { background: #3d2510; border-radius: 10px; padding: 12px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-top: 12px; }
+  .form-label { font-size: 10px; font-weight: 500; color: #1e4976; margin-bottom: 4px; font-family: var(--font-sans); display: block; }
+  .form-input { width: 100%; border: 0.5px solid #b3cef0; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #1a3a5c; background: #f0f4fb; font-family: var(--font-sans); }
+  .kbzhu-auto { background: #1a3a5c; border-radius: 10px; padding: 12px; display: grid; grid-template-columns: repeat(4,1fr); text-align: center; margin-top: 12px; }
   .kbzhu-auto-val { font-size: 14px; font-weight: 700; font-family: Georgia, serif; }
-  .kbzhu-auto-label { font-size: 9px; opacity: 0.45; color: #faf0d7; font-family: var(--font-sans); }
+  .kbzhu-auto-label { font-size: 9px; opacity: 0.45; color: #e8f0fe; font-family: var(--font-sans); }
   .ing-row { display: grid; grid-template-columns: 3fr 1fr 1fr; gap: 6px; margin-bottom: 6px; align-items: center; }
-  .submit-btn { background: #c8552a; color: white; width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-sans); }
+  .submit-btn { background: #1565c0; color: white; width: 100%; padding: 12px; border-radius: 12px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-sans); }
 </style>
 
 <div class="app">
   <nav class="nav">
-    <div class="nav-logo">КулинАрт</div>
+    <div class="nav-logo">One Day With Me</div>
     <div class="nav-links">
       <div class="nav-link active" onclick="showPage('home')">Главная</div>
       <div class="nav-link" onclick="showPage('recipes')">Рецепты</div>
@@ -170,12 +170,12 @@
           <div class="section-title">Рецепты</div>
           <div class="section-sub" id="recipes-count">6 блюд найдено</div>
         </div>
-        <button onclick="showPage('new')" style="background:#c8552a;color:white;border:none;padding:8px 14px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">+ Добавить</button>
+        <button onclick="showPage('new')" style="background:#1565c0;color:white;border:none;padding:8px 14px;border-radius:10px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">+ Добавить</button>
       </div>
-      <div style="background:white;border-radius:14px;padding:12px;border:0.5px solid #f5e0ad;margin-bottom:14px;">
+      <div style="background:white;border-radius:14px;padding:12px;border:0.5px solid #b3cef0;margin-bottom:14px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <input class="form-input" placeholder="Поиск по названию..." id="search-title" oninput="filterRecipesList()" style="background:#fdf9f0;">
-          <input class="form-input" placeholder="Найти по ингредиенту..." id="search-ing" oninput="filterRecipesList()" style="background:#fdf9f0;">
+          <input class="form-input" placeholder="Поиск по названию..." id="search-title" oninput="filterRecipesList()" style="background:#f0f4fb;">
+          <input class="form-input" placeholder="Найти по ингредиенту..." id="search-ing" oninput="filterRecipesList()" style="background:#f0f4fb;">
         </div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;" id="cat-filters">
@@ -208,7 +208,7 @@
         <div>
           <div class="col-title">Ингредиенты</div>
           <div style="margin-bottom:8px;">
-            <div style="display:flex;justify-content:space-between;font-size:9px;color:#5c3d1e;opacity:0.5;margin-bottom:4px;font-family:var(--font-sans);">
+            <div style="display:flex;justify-content:space-between;font-size:9px;color:#1e4976;opacity:0.5;margin-bottom:4px;font-family:var(--font-sans);">
               <span>Есть в наличии</span><span id="ing-progress">0/0</span>
             </div>
             <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
@@ -264,12 +264,12 @@
       <div class="form-section">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <div class="form-section-title" style="margin-bottom:0">Ингредиенты</div>
-          <span onclick="addIngRow()" style="font-size:11px;color:#c8552a;cursor:pointer;font-family:var(--font-sans);font-weight:500;">+ Добавить</span>
+          <span onclick="addIngRow()" style="font-size:11px;color:#1565c0;cursor:pointer;font-family:var(--font-sans);font-weight:500;">+ Добавить</span>
         </div>
         <div style="display:grid;grid-template-columns:3fr 1fr 1fr;gap:6px;margin-bottom:6px;">
-          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Название</span>
-          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Кол-во</span>
-          <span style="font-size:9px;color:#5c3d1e;opacity:0.5;font-family:var(--font-sans);">Ед.</span>
+          <span style="font-size:9px;color:#1e4976;opacity:0.5;font-family:var(--font-sans);">Название</span>
+          <span style="font-size:9px;color:#1e4976;opacity:0.5;font-family:var(--font-sans);">Кол-во</span>
+          <span style="font-size:9px;color:#1e4976;opacity:0.5;font-family:var(--font-sans);">Ед.</span>
         </div>
         <div id="ing-rows">
           <div class="ing-row">
@@ -284,12 +284,12 @@
           </div>
         </div>
         <div class="kbzhu-auto">
-          <div><div class="kbzhu-auto-val" style="color:#f5e0ad;">320</div><div class="kbzhu-auto-label">ккал/порц</div></div>
-          <div><div class="kbzhu-auto-val" style="color:#97c459;">12г</div><div class="kbzhu-auto-label">белки</div></div>
-          <div><div class="kbzhu-auto-val" style="color:#e8d5b7;">8г</div><div class="kbzhu-auto-label">жиры</div></div>
-          <div><div class="kbzhu-auto-val" style="color:#ef9f27;">48г</div><div class="kbzhu-auto-label">углеводы</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#b3cef0;">320</div><div class="kbzhu-auto-label">ккал/порц</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#42a5f5;">12г</div><div class="kbzhu-auto-label">белки</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#c5d9f0;">8г</div><div class="kbzhu-auto-label">жиры</div></div>
+          <div><div class="kbzhu-auto-val" style="color:#1e88e5;">48г</div><div class="kbzhu-auto-label">углеводы</div></div>
         </div>
-        <div style="font-size:9px;color:#5c3d1e;opacity:0.35;text-align:center;margin-top:6px;font-family:var(--font-sans);">КБЖУ рассчитывается автоматически на 4 порции</div>
+        <div style="font-size:9px;color:#1e4976;opacity:0.35;text-align:center;margin-top:6px;font-family:var(--font-sans);">КБЖУ рассчитывается автоматически на 4 порции</div>
       </div>
       <button class="submit-btn" onclick="saveRecipe()">✓ Сохранить рецепт</button>
     </div>
@@ -310,27 +310,27 @@
         </div>
       </div>
       <div class="week-summary">
-        <div><div class="ws-val" style="color:#f5e0ad;">2840</div><div class="ws-label">ккал/нед</div></div>
-        <div><div class="ws-val" style="color:#97c459;">186г</div><div class="ws-label">белки</div></div>
-        <div><div class="ws-val" style="color:#e8d5b7;">94г</div><div class="ws-label">жиры</div></div>
-        <div><div class="ws-val" style="color:#ef9f27;">312г</div><div class="ws-label">углеводы</div></div>
+        <div><div class="ws-val" style="color:#b3cef0;">2840</div><div class="ws-label">ккал/нед</div></div>
+        <div><div class="ws-val" style="color:#42a5f5;">186г</div><div class="ws-label">белки</div></div>
+        <div><div class="ws-val" style="color:#c5d9f0;">94г</div><div class="ws-label">жиры</div></div>
+        <div><div class="ws-val" style="color:#1e88e5;">312г</div><div class="ws-label">углеводы</div></div>
       </div>
       <div class="week-grid" id="week-grid"></div>
       <div style="text-align:center;margin-top:16px;">
-        <button onclick="showPage('recipes')" style="background:#c8552a;color:white;border:none;padding:10px 20px;border-radius:12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">Выбрать рецепты →</button>
+        <button onclick="showPage('recipes')" style="background:#1565c0;color:white;border:none;padding:10px 20px;border-radius:12px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-sans);">Выбрать рецепты →</button>
       </div>
     </div>
   </div>
 </div>
 
 <style>
-  .cat-filter-btn { padding: 7px 14px; border-radius: 50px; font-size: 11px; font-weight: 500; border: 0.5px solid #f5e0ad; background: white; color: #5c3d1e; cursor: pointer; font-family: var(--font-sans); transition: all 0.15s; }
-  .cat-filter-btn.active { background: #3d2510; color: #faf0d7; border-color: #3d2510; }
+  .cat-filter-btn { padding: 7px 14px; border-radius: 50px; font-size: 11px; font-weight: 500; border: 0.5px solid #b3cef0; background: white; color: #1e4976; cursor: pointer; font-family: var(--font-sans); transition: all 0.15s; }
+  .cat-filter-btn.active { background: #1a3a5c; color: #e8f0fe; border-color: #1a3a5c; }
 </style>
 
 <script>
 const RECIPES = [
-  { id:1, title:'Классический тирамису', cat:'desserts', emoji:'🍰', bg:'#faf0d7', desc:'Нежный итальянский десерт с маскарпоне', kcal:420, prot:8, fat:28, carbs:35, time:30, servings:6,
+  { id:1, title:'Классический тирамису', cat:'desserts', emoji:'🍰', bg:'#e8f0fe', desc:'Нежный итальянский десерт с маскарпоне', kcal:420, prot:8, fat:28, carbs:35, time:30, servings:6,
     ingredients:[{name:'Маскарпоне',g:500},{name:'Яйца',g:180},{name:'Сахар',g:100},{name:'Савоярди',g:200},{name:'Эспрессо',g:200},{name:'Какао',g:20}],
     steps:['Взбейте желтки с сахаром до побеления','Добавьте маскарпоне и перемешайте','Взбейте белки в крепкую пену и введите в крем','Обмакните савоярди в остывший эспрессо','Выложите слоями: печенье, крем, снова печенье и крем','Посыпьте какао, уберите в холодильник на 4–6 часов']
   },
@@ -442,10 +442,10 @@ function showDetail(id) {
   document.getElementById('detail-desc').textContent = r.desc;
   document.getElementById('detail-meta').innerHTML = `<span>⏱ ${r.time} мин</span><span style="margin-left:12px">👤 ${r.servings} порц.</span><span style="margin-left:12px">${r.steps.length} шагов</span>`;
   document.getElementById('detail-kbzhu').innerHTML = `
-    <div><div class="kbzhu-big-val" style="color:#f5e0ad">${r.kcal}</div><div class="kbzhu-big-label">ккал</div></div>
-    <div><div class="kbzhu-big-val" style="color:#97c459">${r.prot}г</div><div class="kbzhu-big-label">белки</div></div>
-    <div><div class="kbzhu-big-val" style="color:#e8d5b7">${r.fat}г</div><div class="kbzhu-big-label">жиры</div></div>
-    <div><div class="kbzhu-big-val" style="color:#ef9f27">${r.carbs}г</div><div class="kbzhu-big-label">углеводы</div></div>
+    <div><div class="kbzhu-big-val" style="color:#b3cef0">${r.kcal}</div><div class="kbzhu-big-label">ккал</div></div>
+    <div><div class="kbzhu-big-val" style="color:#42a5f5">${r.prot}г</div><div class="kbzhu-big-label">белки</div></div>
+    <div><div class="kbzhu-big-val" style="color:#c5d9f0">${r.fat}г</div><div class="kbzhu-big-label">жиры</div></div>
+    <div><div class="kbzhu-big-val" style="color:#1e88e5">${r.carbs}г</div><div class="kbzhu-big-label">углеводы</div></div>
   `;
   renderIngredients(r);
   document.getElementById('detail-steps').innerHTML = r.steps.map((s,i) =>
@@ -491,7 +491,7 @@ function renderWeek() {
       <div class="day-num${isToday?' today-num':''}">${date.getDate()}</div>
       ${dayKcal ? `<div class="day-kcal">${dayKcal} кк</div>` : ''}
       ${meals.map(m => `<div class="day-meal-label">${m.mealType}</div><div class="day-meal-item">${m.recipe}</div>`).join('')}
-      ${meals.length === 0 ? '<div style="font-size:9px;color:#5c3d1e;opacity:0.25;margin-top:8px;font-family:var(var(--font-sans))">+ добавить</div>' : ''}
+      ${meals.length === 0 ? '<div style="font-size:9px;color:#1e4976;opacity:0.25;margin-top:8px;font-family:var(var(--font-sans))">+ добавить</div>' : ''}
     </div>`;
   }).join('');
 }
@@ -512,7 +512,7 @@ function saveRecipe() {
     title,
     cat: document.getElementById('new-cat').value,
     emoji: '🍽️',
-    bg: '#fdf9f0',
+    bg: '#f0f4fb',
     desc: document.getElementById('new-desc').value || 'Мой рецепт',
     kcal: 320,
     prot: 15,
