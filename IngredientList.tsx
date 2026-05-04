@@ -11,10 +11,10 @@ export default function IngredientList({ ingredients }: Props) {
   const [scaledIngredients, setScaledIngredients] = useState(ingredients)
   const [selectedIngredient, setSelectedIngredient] = useState<string | null>(null)
   const [inputGrams, setInputGrams] = useState<number>(0)
-  
+
   const handleAutoScale = (name: string, grams: number) => {
     if (!grams) return
-    
+
     const recipe = {
       ingredients: ingredients.map(i => ({
         name: i.name,
