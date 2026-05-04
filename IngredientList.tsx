@@ -33,6 +33,7 @@ export default function IngredientList({ ingredients }: Props) {
     )
   }
 
+  
   const handleScale = () => {
     const recipe = {
       ingredients: ingredients.map(i => ({
