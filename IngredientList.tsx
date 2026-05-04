@@ -1,4 +1,4 @@
-// src/components/recipe/IngredientList.tsx
+import { scaleRecipeByIngredient } from "@/lib/recipeUtils";
 'use client'
 import { useState } from 'react'
 import type { Ingredient } from '@/types'
@@ -9,7 +9,10 @@ interface Props {
 
 export default function IngredientList({ ingredients }: Props) {
   const [checked, setChecked] = useState<Set<number>>(new Set())
-
+  const handleScale = () => {
+  const updated = scaleRecipeByIngredient(recipe, "Мука", 100);
+  console.log(updated);
+};
   const toggle = (id: number) => {
     setChecked(prev => {
       const next = new Set(prev)
